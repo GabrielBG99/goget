@@ -1,10 +1,11 @@
 
 BUILDPATH=$(CURDIR)/bin
 GO=$(shell which go)
-VERSION=v0.1
+VERSION=$(shell git describe --tags $(shell git rev-list --tags --max-count=1))
 LDFLAGS="-X 'main.Version=$(VERSION)'"
 
 EXENAME=goget
+
 
 install: build ## Install goget to $PATH
 	@mv $(BUILDPATH)/$(EXENAME) /usr/bin
