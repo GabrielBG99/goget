@@ -1,7 +1,7 @@
 
 BUILDPATH=$(CURDIR)/bin
 GO=$(shell which go)
-VERSION=0.0.1
+VERSION=v0.1
 LDFLAGS="-X 'main.Version=$(VERSION)'"
 
 EXENAME=goget
