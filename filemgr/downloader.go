@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"regexp"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -217,8 +217,7 @@ func NewDownloadClient(rawurl, filePath string, parts uint64, force bool) (*Down
 		}
 
 		for _, f := range files {
-			match, _ := regexp.Match(fmt.Sprintf(`^%s`, fileName), []byte(f.Name()))
-			if match {
+			if strings.HasPrefix(f.Name(), fileName) {
 				if err := os.Remove(path.Join(dir, f.Name())); err != nil {
 					return nil, ErrUnableToForceDownload
 				}
