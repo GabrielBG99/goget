@@ -14,7 +14,7 @@ func main() {
 	cli.VersionFlag = &cli.BoolFlag{
 		Name:    "version",
 		Aliases: []string{"V"},
-		Usage:   "Show goget1s version",
+		Usage:   "Show goget's version",
 	}
 
 	app := &cli.App{

@@ -3,6 +3,6 @@ package commands
 import "errors"
 
 var (
-	ErrInvalidURL      = errors.New("Invalid URL")
-	ErrStatusCodeNotOK = errors.New("Server returned an status code out of range 2XX")
+	ErrUnableToDetectFolder = errors.New("The user's home folder could not be detected")
+	ErrUnableToCreateFolder = errors.New("The folder could not be created")
 )
