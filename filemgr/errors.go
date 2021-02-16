@@ -13,4 +13,5 @@ var (
 	ErrUnableToRequest            = errors.New("An error occured while connecting to the provided URL")
 	ErrInvalidContentLength       = errors.New("The server returned an invalid \"Content-Length\" header")
 	ErrInvalidNumberOfParts       = errors.New("The number of parts should be greater than 0")
+	ErrRemovingParts              = errors.New("Error removing part files")
 )

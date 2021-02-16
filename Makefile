@@ -8,7 +8,7 @@ EXENAME=goget
 
 
 install: build ## Install goget to $PATH
-	@mv $(BUILDPATH)/$(EXENAME) /usr/local/bin
+	@mv -f $(BUILDPATH)/$(EXENAME) /usr/local/bin
 	@$(MAKE) clean
 
 clean: ## Removes the build folder and all its content

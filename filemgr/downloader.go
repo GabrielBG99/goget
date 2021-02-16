@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -84,6 +85,30 @@ func (d DownloadClient) download() error {
 	return err
 }
 
+func (d DownloadClient) removePartFiles() error {
+	dir := path.Dir(d.FilePath)
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return ErrRemovingParts
+	}
+
+	filePattern := fmt.Sprintf(fmt.Sprintf(`^%v`, FILE_PART_NAME_TEMPLATE), path.Base(d.FilePath), `\d+$`)
+
+	for _, f := range files {
+		match, err := regexp.Match(filePattern, []byte(f.Name()))
+		if err != nil {
+			return ErrRemovingParts
+		}
+		if match {
+			if err := os.Remove(path.Join(dir, f.Name())); err != nil {
+				return ErrRemovingParts
+			}
+		}
+	}
+
+	return nil
+}
+
 func (d DownloadClient) mergeParts() error {
 	file, err := os.OpenFile(d.FilePath, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
@@ -105,7 +130,7 @@ func (d DownloadClient) mergeParts() error {
 		}
 	}
 
-	return nil
+	return d.removePartFiles()
 }
 
 func (d *DownloadClient) GetSize() (uint64, error) {
