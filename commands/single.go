@@ -42,7 +42,7 @@ func Single() *cli.Command {
 			&cli.StringFlag{
 				Name:     URL_FLAG_NAME,
 				Aliases:  []string{"u"},
-				Usage:    "Content URL",
+				Usage:    "Content `URL`",
 				Required: true,
 			},
 			&cli.IntFlag{
@@ -59,7 +59,7 @@ func Single() *cli.Command {
 			&cli.PathFlag{
 				Name:    OUTPUT_DIR_FLAG_NAME,
 				Aliases: []string{"d"},
-				Usage:   "The output dir path",
+				Usage:   "The output dir `PATH`",
 			},
 			&cli.BoolFlag{
 				Name:    OVERWRITE_OUTPUT,
