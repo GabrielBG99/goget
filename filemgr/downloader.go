@@ -67,24 +67,6 @@ func (d DownloadClient) downloadPart(path string, begin, end int, ch chan<- erro
 	ch <- err
 }
 
-func (d DownloadClient) download() error {
-	file, err := os.OpenFile(d.FilePath, os.O_WRONLY|os.O_CREATE, 0644)
-	if err != nil {
-		return ErrUnableToCreateDownloadFile
-	}
-	defer file.Close()
-
-	res, err := http.Get(d.URL)
-	if err != nil {
-		return ErrUnableToRequest
-	}
-	defer res.Body.Close()
-
-	buf := make([]byte, BUF_SIZE)
-	_, err = io.CopyBuffer(file, res.Body, buf)
-	return err
-}
-
 func (d DownloadClient) removePartFiles() error {
 	dir := path.Dir(d.FilePath)
 	files, err := ioutil.ReadDir(dir)
@@ -171,11 +153,13 @@ func (d *DownloadClient) GetSize() (uint64, error) {
 }
 
 func (d DownloadClient) Download() error {
-	if d.Parts == 1 {
-		return d.download()
-	}
-
 	ch := make(chan error)
+	defer close(ch)
+
+	if d.Parts == 1 {
+		go d.downloadPart(d.FilePath, 0, int(d.Size), ch)
+		return <-ch
+	}
 
 	parts := int(d.Parts)
 	sizePerPart := int(d.Size / d.Parts)
